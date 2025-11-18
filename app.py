@@ -1,4 +1,5 @@
 # Imports
+import os
 from flask import Flask
 from dotenv import load_dotenv
 from config import DevelopmentConfig
@@ -18,7 +19,9 @@ load_dotenv()
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
-    app.config.from_object(DevelopmentConfig)
+    # app.config.from_object(DevelopmentConfig)
+
+    app.config["UPLOAD_PATH"] = os.environ.get("UPLOAD_PATH")
 
     app.photo_service = PhotoService()
     app.limiter_service = LimiterService()
@@ -34,5 +37,5 @@ def create_app():
 
 app = create_app()
 
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=5000, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
