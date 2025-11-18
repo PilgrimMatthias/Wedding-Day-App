@@ -1,0 +1,6 @@
+.env
+*.env
+instance/
+__pycache__/
+*.sqlite
+*.drawio

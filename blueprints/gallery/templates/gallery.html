@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+
+{% endblock %}
+
+{% block bodyt %}
+<div class="content">
+    <div class="container py-4">
+
+        <!-- HEADER -->
+        <div class="gallery-header text-center">
+            <p>
+                Zdjęcia od fotografa to nie wszystko — podziel się zdjęciem siebie i najbliższych!<br>
+                Podpisz zdjęcie, abyśmy mogli się lepiej poznać 😊
+            </p>
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-2">
+                <button class="btn btn-upload" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    📤 Wgraj zdjęcie
+                </button>
+
+                <button class="btn btn-download" id="downloadAllBtn">
+                    📥 Pobierz wszystkie
+                </button>
+            </div>
+        </div>
+        <hr>
+
+        <!-- Upload Modal -->
+        <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header border-0">
+                        <h3 class="modal-title fw-semibold" id="uploadModalLabel">Dodaj nowe zdjęcie</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form id="uploadForm" enctype="multipart/form-data" method="post" action="/gallery/upload">
+                            <div class="mb-3">
+                                <label for="photoInput" class="form-label">Wybierz zdjęcie</label>
+                                <input class="form-control" type="file" name="photoInput" accept="image/*" maxlength="2"
+                                    required multiple>
+                            </div>
+                            <div class="mb-3">
+                                <label for="captionInput" class="form-label">Podpis (imiona lub opis)</label>
+                                <input type="text" class="form-control" name="captionInput"
+                                    placeholder="Np. Dagmara i Maciek">
+                            </div>
+
+                            <div class="modal-footer border-0">
+                                <input type="submit" class="btn btn-upload rounded-pill" id="savePhotoBtn"
+                                    value="Prześlij">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel">
+
+        </div>
+
+        <!-- ⚠️ 429 ERROR MODAL -->
+        <div class="modal fade" id="error429Modal" tabindex="-1" aria-labelledby="error429Label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius: 15px;">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <h5 class="modal-title" id="error429Label">Zbyt wiele zapytań 😥</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <p style="font-size: 1.1rem; color: #555;">
+                            Wygląda na to, że wysyłasz zbyt wiele zapytań naraz.<br>
+                            Spróbuj ponownie po godzinie:
+                        </p>
+
+                        <p id="rateLimitInfo"></p>
+
+                    </div>
+
+                    <div class="modal-footer" style="border-top: none; justify-content: center;">
+                        <button class="btn btn-upload" data-bs-dismiss="modal">
+                            OK, rozumiem
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- GALLERY -->
+        <h2 class="text-center mb-4">Wasze zdjęcia</h2>
+        <div class="gallery-grid">
+            {% for photo in photos %}
+            <div class="gallery-card">
+                <img src="{{ photo.image_path }}" alt="{{ photo.image_name }}"
+                    onclick="openModal('{{ photo.image_path }}')" />
+                <div class="gallery-caption">{{ photo.image_caption }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Image Modal -->
+        <div id="imageModal" class="image-modal" onclick="closeModal()">
+            <span class="image-modal-close">&times;</span>
+            <img class="image-modal-content" id="modalImage">
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function openModal(src) {
+        document.getElementById("modalImage").src = src;
+        document.getElementById("imageModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("imageModal").style.display = "none";
+    }
+</script>
+
+<script>
+    document.getElementById("downloadAllBtn").addEventListener("click", async () => {
+        const btn = document.getElementById("downloadAllBtn");
+        btn.disabled = true;
+        btn.innerText = "⏳ Przygotowywanie...";
+
+        try {
+            const response = await fetch("/gallery/download_all");
+            if (!response.ok) {
+                const data = await response.json();
+                console.log(data.reset_at);
+                document.getElementById("rateLimitInfo").textContent = data.reset_at;
+
+                const errorModal = new bootstrap.Modal(document.getElementById('error429Modal'));
+                errorModal.show();
+                throw new Error("Błąd podczas pobierania");
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "guests_gallery.zip";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "📥 Pobierz wszystkie";
+        }
+    });
+</script>
+{% endblock %}

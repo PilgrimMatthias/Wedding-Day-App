@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task Smash</title>
+
+{% endblock %}
+
+{% block bodyt %}
+<div class="content">
+    <header class="bg-dark text-white py-3">
+        <div class="container">
+            <h1 class="h4 mb-0">Harmonogram dnia ślubu</h1>
+            <div class="small text-muted">20 czerwca 2026 — Sielanka Arciszewo</div>
+        </div>
+    </header>
+
+    <main class="container my-4">
+        <section class="hero text-center mb-4">
+            <h2 class="mb-1">Plan dnia</h2>
+        </section>
+
+        <!-- Poranek -->
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h3 class="section-title">🕘 Poranek</h3>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <td class="time-col fw-bold">07:30</td>
+                                <td>Pobudka i lekkie śniadanie</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">08:00</td>
+                                <td>Fryzjer i makijaż Panny Młodej oraz całej ekipy</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">09:00</td>
+                                <td>Sesja na rowerze Pana Młodego</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">12:00</td>
+                                <td>Transfer do Sielanki</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">12:15</td>
+                                <td>Kontynuacja makijażu świty ślubnej</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ceremonia -->
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h3 class="section-title">💒 Ceremonia ślubna</h3>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <td class="time-col fw-bold">16:00</td>
+                                <td>Ceremonia zaślubin (ślub humanistyczny)</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">16:30</td>
+                                <td>Życzenia po ceremonii</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">17:00</td>
+                                <td>Przejście na salę</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wesele -->
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h3 class="section-title">🎉 Wesele</h3>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <td class="time-col fw-bold">17:00</td>
+                                <td>Obiad weselny</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">18:30</td>
+                                <td>Tort weselny</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">19:00</td>
+                                <td>Sesja pary młodej</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">19:30</td>
+                                <td>Pierwszy taniec i rozpoczęcie zabawy tanecznej</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">20:00</td>
+                                <td>Zabawa do białego rana 🎶</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dzień po -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h3 class="section-title">🌅 Dzień po weselu</h3>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <td class="time-col fw-bold">09:00</td>
+                                <td>Śniadanie z kacem</td>
+                            </tr>
+                            <tr>
+                                <td class="time-col fw-bold">10:00</td>
+                                <td>Spakowanie manatków i powrót do domu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-muted py-3">
+            <small>Kac oczywiście w cenie</small>
+        </footer>
+    </main>
+</div>
+{% endblock %}
