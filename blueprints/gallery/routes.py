@@ -7,6 +7,8 @@ from flask import (
     url_for,
     send_file,
     current_app,
+    make_response,
+    jsonify,
 )
 from services.limiter_service import limiter
 from utils.name_generator import generate_file_name
@@ -40,6 +42,15 @@ def gallery_upload():
         caption = request.form["captionInput"]
         # photo = request.files["photoInput"]
         photos = request.files.getlist("photoInput")
+
+        # Limit number of files
+        if len(photos) > 5:
+            return make_response(
+                jsonify(
+                    {"error": "Wybrano za dużą ilość plików! Wskaż maksymalnie 5."}
+                ),
+                400,
+            )
 
         for photo in photos:
             # Generate new file name

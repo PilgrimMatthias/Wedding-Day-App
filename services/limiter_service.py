@@ -4,6 +4,7 @@ from flask_limiter.util import get_remote_address
 from flask import make_response, jsonify
 from flask_limiter import Limiter, RequestLimit
 from datetime import datetime
+import zoneinfo
 
 
 # Limiter object
@@ -47,7 +48,9 @@ class LimiterService:
         Returns:
             Response: response for site with information about reset time.
         """
-        reset_at = datetime.fromtimestamp(request_limit.reset_at)
+        reset_at = datetime.fromtimestamp(
+            request_limit.reset_at, tz=zoneinfo.ZoneInfo("Europe/Warsaw")
+        )
         print(f"reset_at: {reset_at}")
         return make_response(
             jsonify({"reset_at": reset_at.strftime("%H:%M %Y-%m-%d")}), 429

@@ -33,13 +33,19 @@
                 <div class="modal-content rounded-4 border-0 shadow">
                     <div class="modal-header border-0">
                         <h3 class="modal-title fw-semibold" id="uploadModalLabel">Dodaj nowe zdjęcie</h3>
+
                     </div>
                     <div class="modal-body">
                         <form id="uploadForm" enctype="multipart/form-data" method="post" action="/gallery/upload">
                             <div class="mb-3">
                                 <label for="photoInput" class="form-label">Wybierz zdjęcie</label>
+                                <br>
+                                <label for="photoInput" class="form-label"
+                                    style="font-size: 11pt; font-style: italic;">(Wybierz maksymalnie
+                                    5 zdjęć.)</label>
                                 <input class="form-control" type="file" name="photoInput" accept="image/*" maxlength="2"
                                     required multiple>
+                                <div id="fileNumberError" class="text-danger mt-2" style="display:none;"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="captionInput" class="form-label">Podpis (imiona lub opis)</label>
@@ -88,6 +94,8 @@
                 </div>
             </div>
         </div>
+
+
 
 
 
@@ -157,5 +165,25 @@
             btn.innerText = "📥 Pobierz wszystkie";
         }
     });
+
+
+    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        const response = await fetch("/gallery/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            document.getElementById("fileNumberError").style.display = "block";
+            document.getElementById("fileNumberError").innerText = data.error;
+        } else {
+            location.reload();
+        }
+    });
+
 </script>
 {% endblock %}
