@@ -25,7 +25,7 @@ jobs:
       - name: Deploy to server
         run: |
           ssh ${{ secrets.SERVER_USER_NAME }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            cd /apps/Wedding-Day-App || exit 1
+            cd /opt/WeddingDayApp || exit 1
 
             if [ ! -d ".git" ]; then
               git clone https://github.com/${{ github.repository }} .
@@ -33,7 +33,7 @@ jobs:
               git pull origin main
             fi
 
-            docker compose down
-            docker compose build
-            docker compose up -d
+            docker-compose down
+            docker-compose build
+            docker-compose up -d
           EOF
